@@ -1,0 +1,44 @@
+1.（1）开发hololens需要在64位win10环境下（如果没有hololens真机，使用HoloLens Emulator模拟器就必须使用win10专业版，有真机可以用家庭版），
+  unity可以用最新版本，Visual studio必须是Visual Studio Update2及以上版本下载地址（https://go.microsoft.com/fwlink/p/?LinkId=534599）
+  （2）Hololens-MixedRealityToolkit下载地址 ：https://github.com/Microsoft/MixedRealityToolkit-Unity
+     下载后找到路径：MixedRealityToolkit-Unity-master.zip\MixedRealityToolkit-Unity-master\External\Unitypackages，将此路径下带1.5.8.0名称的包都导入Unity中
+2.以上都配置完毕，打开unity创建一个cube用于测试环境是否配置成功。
+     （1）将cube放到摄像机前2米左右，将cube缩小到0.3，将摄像机Clear Flags设置成Solid Color，颜色设置成黑色。
+3.设置属性：
+    （1）点击Edit，点击project settings，点击Quality（质量），属性面板中出现QualitySettings,找到Default（系统默认），
+  这个后面有两个三角，点击设置成fastest。
+    （2）在点击Build Ssttings发布平台设置为Windows Store，右面有个Target device设置成
+  HoloLens。下面有个UnityC# projects打上勾。
+    （3）点击player settings找到Virtual Reality Support打勾，点击加号设置成Windows Holographic.
+    （4）点击Biuld，发布出来，（发布的时候会弹出路径，创建一个文件夹放发布的东西）
+4.发布成功后点击文件夹，找到vs图标点击打开vs，将vs顶部ARM改x86，运行按钮上有个黑角标，点击选择Device。
+5.将hololens眼镜用数据线和电脑连接(下面还有wifi连接)，vs点击运行，（电脑第一次开发hololens会弹出一个提示，点击开发者模式就可以，
+  这是将Win10设置成开发者模式），vs还会弹出要pin码，在hololens眼镜里点击pair会生成，输入到vs就行了。带上眼镜就可以看见cube了
+
+
+
+//这是holotoolkit-1.5.4
+1.下载HoloToolkit（https://github.com/Microsoft/HoloToolkit-Unity）导入到unity中（只用导入Assets文件就行，否则发布的时候报错）
+2.集成HoloToolkit-Unity，右击Assets——Export package.(放入一个文件夹中以后用方便)
+3.制作一个hololens的Demo，
+    （1）新建一个空白场景，删除Main Camera。
+  从 HoloToolkit/Utilities/Prefabs 目录中拖拽一个 Main Camera Prefab 组件到场景中
+    （2） 创建一个空游戏对象，并将其命名为 Input，为 Input 对象添加核心脚本组件，
+  分别为 GazeManager.cs、 GestureManager.cs、 HandsManager.cs 和KeywordManager.cs。这样就集成了凝视、手势和语音命令三大核心特性
+    （3）从 HoloToolkit/Input/Prefabs/ 目录下拖拽 CursorWithFeedback Prefab 组件到场景中。这样当凝视在全息对象时，其表面会出现可视化凝视组件。
+  当用户手势被识别到时，会出现一个蓝色的手掌图像，能够贴心的告诉用户可以操作了。
+     （4）创建一个Cube对象并创建一个新的C#脚本,命名为 HoloTest.cs。
+    脚本中写入此方法，（随机改变颜色的方法）
+    public void OnSelect()  
+    {  
+        gameObject.GetComponent<MeshRenderer>().material.color = new  
+            Color(Random.Range(0, 255) / 255f, Random.Range(0, 255) / 255f,  
+            Random.Range(0, 255) / 255f);  
+    } 
+     （5）进入 Input 组件检视选项卡，为 KeywordManager.cs 组件配置语音命令。找到keywords and Responses下size将0变为1，
+   在keyword里写一个英文（注：此时语音识别，英语不好写一个简单的英文） 
+      （6）点击下面加号，将cube拖入空白处，点击右面添加OnSelect()方法，发布是注意要设置player settings，点击publishing settings，找到capabilities下的
+   microphone（这是hololens语音接受）发布出来
+4.点击发布文件夹，找到vs图标，点击打开vs，把Debug，改成Release，ARM改x86 运行改成远程计算机，运行就可以
+5.运行后会弹出远程连接，在地址里输入hololens的ip地址，（在HoloLens上，你可以在Settings > Network & Internet > Advanced Options中找到的你的IP地址）
+
